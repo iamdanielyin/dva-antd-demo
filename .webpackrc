@@ -1,0 +1,12 @@
+{
+  "entry": "src/index.js",
+  "extraBabelPlugins": [
+    ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": true }]
+  ],
+  "ignoreMomentLocale": true,
+  "html": {
+    "template": "./src/index.ejs"
+  },
+  "disableDynamicImport": true,
+  "hash": true
+}
