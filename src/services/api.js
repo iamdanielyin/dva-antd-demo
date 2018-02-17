@@ -3,10 +3,11 @@
  * @Author: yinfxs 
  * @Date: 2017-09-02 08:41:11 
  * @Last Modified by: yinfxs
- * @Last Modified time: 2018-02-11 10:33:37
+ * @Last Modified time: 2018-02-17 23:34:20
  */
 
 import request from '../utils/request';
+import constants from '../utils/constants';
 
 /**
  * 常规GET请求
@@ -14,6 +15,7 @@ import request from '../utils/request';
  * @returns {Object}
  */
 export function get({ url, options, onError }) {
+  url = urlfix(url);
   return request({ url, options, onError });
 }
 
@@ -24,11 +26,12 @@ export function get({ url, options, onError }) {
  * @returns {Object}
  */
 export function post({ url, body, options, onError }) {
+  url = urlfix(url);
   return request({
     url,
     options: Object.assign(options || {}, {
       method: 'POST',
-      body: JSON.stringify(body, null, 0),
+      body,
     }),
     onError,
   });
@@ -41,11 +44,12 @@ export function post({ url, body, options, onError }) {
  * @returns {Object}
  */
 export function put({ url, body, options, onError }) {
+  url = urlfix(url);
   return request({
     url,
     options: Object.assign(options || {}, {
       method: 'PUT',
-      body: JSON.stringify(body, null, 0),
+      body,
     }),
     onError,
   });
@@ -58,12 +62,31 @@ export function put({ url, body, options, onError }) {
  * @returns {Object}
  */
 export function del({ url, body, options, onError }) {
+  url = urlfix(url);
   return request({
     url,
     options: Object.assign(options || {}, {
       method: 'DELETE',
-      body: JSON.stringify(body, null, 0),
+      body,
     }),
     onError,
   });
+}
+
+/**
+ * 请求默认模型接口带上前缀
+ * @param url
+ */
+export function urlfix(url) {
+  if (!url || url.startsWith('http')) return url;
+
+  let correctUrl = url;
+  if (url.startsWith('/')) {
+    correctUrl = url.startsWith(constants.API_PREFIX) ? url : `${constants.API_PREFIX}${url}`;
+  } else {
+    correctUrl = `${constants.API_PREFIX}/${url}`;
+  }
+
+  correctUrl = (process.env.__ORIGIN__ || '') + correctUrl;
+  return correctUrl;
 }

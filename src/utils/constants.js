@@ -1,3 +1,3 @@
 export default {
-  API_PREFIX: '/api'
+  API_PREFIX: '/api',
 }

@@ -3,11 +3,10 @@
  * @Author: yinfxs 
  * @Date: 2017-09-02 08:41:11 
  * @Last Modified by: yinfxs
- * @Last Modified time: 2018-02-11 10:30:33
+ * @Last Modified time: 2018-02-17 23:34:27
  */
 
 import request from '../utils/request';
-import { API_PREFIX } from '../utils/constants';
 import { get, post, put, del } from './api';
 
 /**
@@ -17,7 +16,6 @@ import { get, post, put, del } from './api';
  * @returns {Object}
  */
 export function list({ url, onError }) {
-  url = urlfix(url);
   return get({ url, onError });
 }
 
@@ -28,7 +26,6 @@ export function list({ url, onError }) {
  * @returns {Object}
  */
 export function id({ url, onError }) {
-  url = urlfix(url);
   return get({ url, onError });
 }
 
@@ -40,7 +37,6 @@ export function id({ url, onError }) {
  * @returns {Object}
  */
 export function create({ url, body = {}, onError }) {
-  url = urlfix(url);
   return post({ url, body, onError });
 }
 
@@ -52,7 +48,6 @@ export function create({ url, body = {}, onError }) {
  * @returns {Object}
  */
 export function update({ url, body = {}, onError }) {
-  url = urlfix(url);
   return put({ url, body, onError });
 }
 
@@ -64,24 +59,5 @@ export function update({ url, body = {}, onError }) {
  * @returns {Object}
  */
 export function remove({ url, body = {}, onError }) {
-  url = urlfix(url);
   return del({ url, body, onError });
-}
-
-/**
- * 请求默认模型接口带上前缀
- * @param url
- */
-export function urlfix(url) {
-  if (!url || url.startsWith('http')) return url;
-
-  let correctUrl = url;
-  if (url.startsWith('/')) {
-    correctUrl = url.startsWith(API_PREFIX) ? url : `${API_PREFIX}${url}`;
-  } else {
-    correctUrl = `${API_PREFIX}/${url}`;
-  }
-
-  correctUrl = (__ORIGIN__ || '') + correctUrl;
-  return correctUrl;
 }
